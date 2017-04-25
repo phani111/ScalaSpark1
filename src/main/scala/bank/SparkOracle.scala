@@ -31,9 +31,10 @@ object SparkOracle {
     //result.write.json("file:///home/hadoop/result/json")
     odf.createOrReplaceTempView("DEPT")
     odf1.createOrReplaceTempView("EMP")
-    val result2 = spark.sql("SELECT e.DEPTNO, d.DNAME, sum(e.SAL) FROM EMP e  inner join DEPT d on e.DEPTNO = d.DEPTNO\ngroup by e.DEPTNO, d.DNAME ")
+    val result2 = spark.sql("SELECT e.DEPTNO, d.DNAME, sum(e.SAL) Salary FROM EMP e  inner join DEPT d on e.DEPTNO = d.DEPTNO\ngroup by e.DEPTNO, d.DNAME ")
     result2.show()
-    result2.write.csv("file:///home/hadoop/result/join")
+    result2.coalesce(1).write.parquet("file:///home/hadoop/result/join3")
+    //result2.write.jdbc(ohost,"TEST",oprop)
     spark.stop()
   }
 }
